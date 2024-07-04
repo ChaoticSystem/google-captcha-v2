@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificación de ticket</title>
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+</head>
+<body>
+
+  <div class="login-page bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+          <h3 class="mb-3" style="text-align: center;">Verificación de Ticket</h3>
+          <div class="bg-white shadow rounded">
+            <div class="row">
+              <div class="col-md-7 pe-0">
+                <div class="form-left h-100 py-5 px-5">
+                  <form id="miFormulario" action="/verificar" method="post">
+                    <div class="g-recaptcha" data-sitekey="6Ld08wcqAAAAAMZgitDg1avT1ka5-tCfKV1Vlbrr"></div>  
+                    <input type="hidden" id="recaptchaToken" name="recaptchaToken">
+
+                    <div class="col-12">
+                      <button type="submit" id="submitBtn" class="btn btn-primary px-4 float-end mt-4">Consultar ticket</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+  var onloadCallback = function() {
+
+        grecaptcha.render('miRecaptcha', {
+        'sitekey': '6Ld08wcqAAAAAMZgitDg1avT1ka5-tCfKV1Vlbrr', 
+        'theme': 'light', // Tema del widget, estan 'light' o 'dark'
+        'size': 'normal', // Tamaño normal del widget
+        'callback': function(token) {
+          document.getElementById('recaptchaToken').value = token;
+        }
+      });
+    };
+
+
+    document.getElementById('submitBtn').addEventListener('click', function(event) {
+      event.preventDefault(); 
+
+
+      var token = grecaptcha.getResponse();
+      if (!token) {
+        alert('Por favor completa el reCAPTCHA antes de enviar.');
+        return;
+      }
+
+      document.getElementById('recaptchaToken').value = token;
+      document.getElementById('miFormulario').submit();
+    });
+  </script>
+</body>
+</html>
